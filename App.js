@@ -1,19 +1,39 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React,{ useState } from 'react';
+import { StyleSheet, Text, View, VirtualizedListsrr, FlatList } from 'react-native';
+import { uuid } from 'uuidv4'; 
+import ItemInput from './components/ItemInput';
+import ListItems from './components/ListItems';
 
-export default function App() {
+
+function App() {
+  const [items, setItems] = useState([]);
+
+  const handleAddItem = text => {
+    setItems(prevText => [...prevText, {id:uuid(),value: text}])
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <View>
+        <ItemInput 
+        handleAddItem={handleAddItem}
+        />
+      </View>
+        <FlatList 
+          data={items}
+          keyExtractor={item => item.id}
+          renderItem ={ item => <ListItems text={item.item.value} />
+          }
+        />
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 50,
   },
 });
+
+export default App;
